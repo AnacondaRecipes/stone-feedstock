@@ -9,6 +9,8 @@ package:
 source:
   url: https://github.com/dropbox/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: dc5aff3fad1333188d4ddb4eee0a19d31e6262bb3cdf10c0bbdaeb309ff91a52
+  patches:
+    - fix_inspect_atribute.patch
 
 build:
   number: 0
@@ -17,6 +19,9 @@ build:
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
+  build:
+    - m2-patch  # [win]
+    - patch     # [not win]
   host:
     - pip
     - pytest-runner ==5.2.0
@@ -24,9 +29,9 @@ requirements:
     - setuptools
     - wheel
   run:
-    - ply >=3.4
     - python
-    - six >=1.3.0
+    - ply >=3.4
+    - six >=1.12.0
 
 test:
   imports:
