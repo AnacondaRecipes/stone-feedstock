@@ -13,7 +13,7 @@ source:
     - fix_inspect_atribute.patch
 
 build:
-  number: 0
+  number: 1
   entry_points:
     - stone=stone.cli:main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
