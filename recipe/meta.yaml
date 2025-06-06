@@ -1,6 +1,5 @@
 {% set name = "stone" %}
-{% set version = "3.3.1" %}
-
+{% set version = "3.3.9" %}
 
 package:
   name: {{ name|lower }}
@@ -8,9 +7,9 @@ package:
 
 source:
   url: https://github.com/dropbox/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: dc5aff3fad1333188d4ddb4eee0a19d31e6262bb3cdf10c0bbdaeb309ff91a52
+  sha256: e9a54a81208ac2f3724523c3007492ad3cdb9b6a3eb69ad0d3eac94b1a2e0d69
   patches:
-    - fix_inspect_atribute.patch
+    - patches/0001-avoid-strict-pinning.patch
 
 build:
   number: 0
@@ -24,7 +23,8 @@ requirements:
     - patch     # [not win]
   host:
     - pip
-    - pytest-runner ==5.2.0
+    # No need strict pinning
+    - pytest-runner >=5.2.0
     - python
     - setuptools
     - wheel
@@ -32,26 +32,28 @@ requirements:
     - python
     - ply >=3.4
     - six >=1.12.0
+    - packaging >=21.0
+    - jinja2 >=3.0.3
 
 test:
+  source_files:
+    - test
   imports:
     - stone
     - stone.backends
     - stone.backends.python_rsrc
     - stone.frontend
     - stone.ir
-  requires:
-    - pip
-    - pytest <7
-    - mock>=2.0.0,<5.0
-  source_files:
-    - test
   commands:
     - pip check
     - stone --help
     # test_whitespace is skipped on windows because of `InvalidSpec('Indent is not divisible by 4.', 5, 'ns1.stone')`
     - pytest test -k "not test_whitespace"  # [win]
     - pytest test  # [not win]
+  requires:
+    - pip
+    - pytest <7
+    - mock >=2.0.0,<5.0
 
 about:
   home: https://www.dropbox.com/developers
