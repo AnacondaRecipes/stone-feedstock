@@ -69,3 +69,5 @@ extra:
   recipe-maintainers:
     - cjmartian
     - BastianZim
+  skip-lints:
+    - invalid_url
