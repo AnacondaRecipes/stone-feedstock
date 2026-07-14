@@ -1,5 +1,5 @@
 {% set name = "stone" %}
-{% set version = "3.3.9" %}
+{% set version = "3.5.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,15 +7,16 @@ package:
 
 source:
   url: https://github.com/dropbox/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: e9a54a81208ac2f3724523c3007492ad3cdb9b6a3eb69ad0d3eac94b1a2e0d69
+  sha256: 0bf6e5ed8739350da7e82cb003cad9b9fa6febe3a5850265514f1cd98711aaf3
   patches:
     - patches/0001-avoid-strict-pinning.patch
 
 build:
-  number: 1
+  number: 0
   entry_points:
     - stone=stone.cli:main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  skip: true  # [py<311]
 
 requirements:
   host:
@@ -23,8 +24,8 @@ requirements:
     # No need strict pinning
     - pytest-runner >=5.3.2
     - python
-    - setuptools
-    - wheel
+    - setuptools >=77
+    - setuptools-scm >=8,<9
   run:
     - python
     - ply >=3.4
@@ -50,9 +51,9 @@ test:
     - pytest test  # [not win]
   requires:
     - pip
-    - pytest <7 # [py<314]
+    - pytest <7  # [py<314]
     # pytest <7 doesn't support py>=3.14, so we need to allow pytest 7 for py>=3.14
-    - pytest 7 # [py>=314]
+    - pytest 7  # [py>=314]
     - mock >=2.0.0,<5.0
 
 about:
