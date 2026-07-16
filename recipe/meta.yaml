@@ -49,7 +49,7 @@ test:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - stone --help
-    - pytest test -k {{ disabled_tests }}  # [win]
+    - pytest test -k "{{ disabled_tests }}"  # [win]
     - pytest test  # [not win]
 
 about:
