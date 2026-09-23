@@ -1,5 +1,5 @@
 {% set name = "stone" %}
-{% set version = "3.5.2" %}
+{% set version = "3.5.4" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: d1167cf3842fb8f700f6af3645c8b1878db7f91b954c7dfa54a8a2b84d3d4b5e
+  sha256: 4f4f4399e6a7646917716d7dc06f814d32f94f30fb51d61b5c760e8f6d3ba53b
 
 build:
   number: 0
@@ -20,13 +20,13 @@ requirements:
   host:
     - pip
     - python
-    - setuptools >=77
-    - setuptools-scm >=8,<9
+    - setuptools >=83.0.0
+    - setuptools-scm >=10.2.1,<11
   run:
     - python
-    - ply >=3.4
-    - packaging >=21.0
-    - jinja2 >=3.0.3
+    # Upstream source https://github.com/dropbox/stone/blob/v3.5.4/requirements.txt
+    - packaging >=26.2
+    - jinja2 >=3.1.6
 
 # test_whitespace is skipped on windows because of `InvalidSpec('Indent is not divisible by 4.', 5, 'ns1.stone')`
 {% set disabled_tests = " not test_whitespace" %}  # [win]
@@ -49,8 +49,8 @@ test:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - stone --help
-    - pytest test -k "{{ disabled_tests }}"  # [win]
-    - pytest test  # [not win]
+    - pytest -vv test -k "{{ disabled_tests }}"  # [win]
+    - pytest -vv test  # [not win]
 
 about:
   home: https://www.dropbox.com/developers
